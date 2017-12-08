@@ -1,0 +1,11 @@
+# Ceph Monitors
+[mons]
+ceph01.lab.
+
+# Ceph Manager Daemons
+[mgrs:children]
+mons
+
+# Ceph Object Storage Daemons
+[osds]
+ceph[02:04].lab.
