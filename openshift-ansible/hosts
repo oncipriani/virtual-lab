@@ -1,3 +1,5 @@
+# This is an example of a bring your own (byo) host inventory
+
 # Create an OSEv3 group that contains the masters and nodes groups
 [OSEv3:children]
 masters
@@ -295,7 +297,7 @@ openshift_master_identity_providers=[{'name': 'allow_all', 'login': 'true', 'cha
 #osm_api_server_args={'max-requests-inflight': ['400']}
 
 # default subdomain to use for exposed routes
-openshift_master_default_subdomain='lab'
+openshift_master_default_subdomain='apps.lab'
 
 # additional cors origins
 #osm_custom_cors_origins=['foo.example.com', 'bar.example.com']
@@ -893,7 +895,7 @@ openshift_clock_enabled=false
 # openshift_upgrade_post_storage_migration_fatal==false
 
 # Set to true to use firewalld instead of the default iptables
-# See: https://docs.openshift.org/latest/install_config/install/advanced_install.html#advanced-install-configuring-firewalls
+# See: https://docs.openshift.org/3.6/install_config/install/advanced_install.html#advanced-install-configuring-firewalls
 os_firewall_use_firewalld=true
 
 # Disable specific pre-install checks
