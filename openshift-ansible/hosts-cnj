@@ -355,7 +355,7 @@ openshift_master_default_subdomain=apps.cnj.jus.br
 
 # default storage plugin dependencies to install, by default the ceph and
 # glusterfs plugin dependencies will be installed, if available.
-#osn_storage_plugin_deps=['ceph','glusterfs','iscsi']
+osn_storage_plugin_deps=['ceph']
 
 # OpenShift Router Options
 #
@@ -490,18 +490,18 @@ openshift_master_default_subdomain=apps.cnj.jus.br
 # Any S3 service (Minio, ExoScale, ...): Basically the same as above
 # but with regionendpoint configured
 # S3 bucket must already exist.
-#openshift_hosted_registry_storage_kind=object
-#openshift_hosted_registry_storage_provider=s3
-#openshift_hosted_registry_storage_s3_accesskey=access_key_id
-#openshift_hosted_registry_storage_s3_secretkey=secret_access_key
-#openshift_hosted_registry_storage_s3_regionendpoint=https://myendpoint.example.com/
-#openshift_hosted_registry_storage_s3_bucket=bucket_name
-#openshift_hosted_registry_storage_s3_region=bucket_region
-#openshift_hosted_registry_storage_s3_chunksize=26214400
-#openshift_hosted_registry_storage_s3_rootdirectory=/registry
-#openshift_hosted_registry_pullthrough=true
-#openshift_hosted_registry_acceptschema2=true
-#openshift_hosted_registry_enforcequota=true
+openshift_hosted_registry_storage_kind=object
+openshift_hosted_registry_storage_provider=s3
+openshift_hosted_registry_storage_s3_accesskey=ZONZL8PTY7DXA1GD7YXE
+openshift_hosted_registry_storage_s3_secretkey=KZpVHgBotxHxVjkFNPJoaC4y1JjS8jbH8y6yagzj
+openshift_hosted_registry_storage_s3_regionendpoint=http://ceph.cnj.jus.br/
+openshift_hosted_registry_storage_s3_bucket=origin
+openshift_hosted_registry_storage_s3_region=default
+openshift_hosted_registry_storage_s3_chunksize=26214400
+openshift_hosted_registry_storage_s3_rootdirectory=/registry
+openshift_hosted_registry_pullthrough=true
+openshift_hosted_registry_acceptschema2=true
+openshift_hosted_registry_enforcequota=true
 #
 # Additional CloudFront Options. When using CloudFront all three
 # of the followingg variables must be defined.
@@ -513,7 +513,7 @@ openshift_master_default_subdomain=apps.cnj.jus.br
 # See: https://docs.openshift.com/enterprise/latest/install_config/cluster_metrics.html
 #
 # By default metrics are not automatically deployed, set this to enable them
-#openshift_metrics_install_metrics=true
+openshift_metrics_install_metrics=false
 #
 # Storage Options
 # If openshift_metrics_storage_kind is unset then metrics will be stored
@@ -564,6 +564,8 @@ openshift_master_default_subdomain=apps.cnj.jus.br
 # when openshift_deployment_type=='openshift-enterprise'
 #openshift_metrics_image_prefix=registry.access.redhat.com/openshift3/
 #openshift_metrics_image_version=v3.7
+# Cassandra persistent volumes need to be created before the installation
+openshift_metrics_cassandra_storage_type=pv
 #
 # StorageClass
 # openshift_storageclass_name=gp2
@@ -573,7 +575,7 @@ openshift_master_default_subdomain=apps.cnj.jus.br
 # Logging deployment
 #
 # Currently logging deployment is disabled by default, enable it by setting this
-#openshift_logging_install_logging=true
+openshift_logging_install_logging=true
 #
 # Logging storage config
 # Option A - NFS Host Group
@@ -622,10 +624,12 @@ openshift_master_default_subdomain=apps.cnj.jus.br
 # when openshift_deployment_type=='openshift-enterprise'
 #openshift_logging_image_prefix=registry.access.redhat.com/openshift3/
 #openshift_logging_image_version=3.7.0
+# Name of the storage class to use for a static PVC
+openshift_logging_es_pvc_storage_class_name=rbd
 # Whether or not to add the dynamic PVC annotation for any generated PVCs
-#openshift_logging_es_pvc_dynamic=True
+openshift_logging_es_pvc_dynamic=True
 # The requested size for the ES PVCs, when not provided the role will not generate any PVCs
-#openshift_logging_es_pvc_size=100G
+openshift_logging_es_pvc_size=100Gi
 
 # Prometheus deployment
 #
@@ -722,8 +726,8 @@ os_sdn_network_plugin_name='redhat/openshift-ovs-multitenant'
 #  openshift_portal_net: serviceNetworkCIDR
 # When installing osm_cluster_network_cidr and openshift_portal_net must be set.
 # Sane examples are provided below.
-#osm_cluster_network_cidr=10.128.0.0/14
-#openshift_portal_net=172.30.0.0/16
+osm_cluster_network_cidr=10.128.0.0/14
+openshift_portal_net=172.18.0.0/16
 
 # ExternalIPNetworkCIDRs controls what values are acceptable for the
 # service external IP field. If empty, no externalIP may be set. It
