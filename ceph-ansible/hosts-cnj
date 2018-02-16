@@ -1,0 +1,15 @@
+# Ceph Monitors
+[mons]
+ceph-mon-t[01:03].cnj.jus.br
+
+# Ceph Manager Daemons
+[mgrs:children]
+mons
+
+# Ceph Storage Object Gateways
+[rgws]
+ceph-rgw-t01.cnj.jus.br
+
+# Ceph Object Storage Daemons
+[osds]
+ceph-osd-t[01:03].cnj.jus.br

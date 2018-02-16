@@ -13,4 +13,4 @@ parameters:
   pool: origin
   userId: origin
   userSecretName: ceph-secret-user
-  fsType: ext4
+  fsType: xfs
