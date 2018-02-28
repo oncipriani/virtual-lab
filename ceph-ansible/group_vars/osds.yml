@@ -116,11 +116,12 @@ devices: [ '/dev/sdb' ]
 # /dev/sda2: PARTLABEL="ceph block" PARTUUID="e6ca3e1d-4702-4569-abfa-e285de328e9d"
 #
 
-osd_scenario: 'collocated'
+#osd_scenario: "{{ 'collocated' if journal_collocation or dmcrypt_journal_collocation else 'non-collocated' if raw_multi_journal or dmcrypt_dedicated_journal else 'dummy' }}" # backward compatibility with stable-2.2, will disappear in stable 3.1
 #valid_osd_scenarios:
 #  - collocated
 #  - non-collocated
 #  - lvm
+osd_scenario: collocated
 
 
 # II.  Second scenario: non-collocated

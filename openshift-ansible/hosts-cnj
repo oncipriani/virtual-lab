@@ -492,10 +492,10 @@ osn_storage_plugin_deps=['ceph']
 # S3 bucket must already exist.
 openshift_hosted_registry_storage_kind=object
 openshift_hosted_registry_storage_provider=s3
-openshift_hosted_registry_storage_s3_accesskey=ZONZL8PTY7DXA1GD7YXE
-openshift_hosted_registry_storage_s3_secretkey=KZpVHgBotxHxVjkFNPJoaC4y1JjS8jbH8y6yagzj
+openshift_hosted_registry_storage_s3_accesskey=DXWUDHYLJY3F88Q7B7DH
+openshift_hosted_registry_storage_s3_secretkey=bGmEcyO2vKdZ8ELWhglUDbKEyNnvEVEiCtFof0wd
 openshift_hosted_registry_storage_s3_regionendpoint=http://ceph.cnj.jus.br/
-openshift_hosted_registry_storage_s3_bucket=origin
+openshift_hosted_registry_storage_s3_bucket=origin-registry
 openshift_hosted_registry_storage_s3_region=default
 openshift_hosted_registry_storage_s3_chunksize=26214400
 openshift_hosted_registry_storage_s3_rootdirectory=/registry
@@ -575,7 +575,7 @@ openshift_metrics_cassandra_storage_type=pv
 # Logging deployment
 #
 # Currently logging deployment is disabled by default, enable it by setting this
-openshift_logging_install_logging=true
+openshift_logging_install_logging=false
 #
 # Logging storage config
 # Option A - NFS Host Group
@@ -627,12 +627,12 @@ openshift_logging_install_logging=true
 # Name of the storage class to use for a static PVC
 openshift_logging_es_pvc_storage_class_name=rbd
 # The requested size for the ES PVCs, when not provided the role will not generate any PVCs
-openshift_logging_es_pvc_size=100Gi
+openshift_logging_es_pvc_size=50Gi
 
 # Prometheus deployment
 #
 # Currently prometheus deployment is disabled by default, enable it by setting this
-#openshift_hosted_prometheus_deploy=false
+#openshift_hosted_prometheus_deploy=true
 #
 # Prometheus storage config
 # Option A - NFS Host Group
