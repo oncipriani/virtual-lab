@@ -1,0 +1,16 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: rbd
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "true"
+provisioner: kubernetes.io/rbd
+parameters:
+  monitors: ceph-mon-t01.cnj.jus.br:6789,ceph-mon-t02.cnj.jus.br:6789,ceph-mon-t03.cnj.jus.br:6789
+  adminId: admin
+  adminSecretName: ceph-secret-admin
+  adminSecretNamespace: kube-system
+  pool: origin
+  userId: origin
+  userSecretName: ceph-secret-user
+  fsType: xfs

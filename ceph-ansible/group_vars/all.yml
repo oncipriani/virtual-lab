@@ -69,12 +69,12 @@ dummy:
 #  - hdparm
 
 centos_package_dependencies:
- - python-pycurl
- - hdparm
- - epel-release
- - python-setuptools
- - libselinux-python
- - centos-release-ceph-luminous
+  - python-pycurl
+  - hdparm
+  - epel-release
+  - python-setuptools
+  - libselinux-python
+  - centos-release-ceph-luminous
 
 #redhat_package_dependencies:
 #  - python-pycurl
@@ -121,13 +121,12 @@ ntp_service_enabled: false
 # - 'distro' means that no separate repo file will be added
 #  you will get whatever version of Ceph is included in your Linux distro.
 # 'local' means that the ceph binaries will be copied over from the local machine
-ceph_origin: 'distro'
+#ceph_origin: "{{ 'repository' if ceph_rhcs or ceph_stable or ceph_dev or ceph_stable_uca or ceph_custom else 'dummy' }}" # backward compatibility with stable-2.2, will disappear in stable 3.1
 #valid_ceph_origins:
 #  - repository
 #  - distro
 #  - local
-
-
+ceph_origin: distro
 #ceph_repository: "{{ 'community' if ceph_stable else 'rhcs' if ceph_rhcs else 'dev' if ceph_dev else 'uca' if ceph_stable_uca else 'custom' if ceph_custom else 'dummy' }}" # backward compatibility with stable-2.2, will disappear in stable 3.1
 #valid_ceph_repository:
 #  - community
@@ -143,8 +142,9 @@ ceph_origin: 'distro'
 #
 #ceph_mirror: http://download.ceph.com
 #ceph_stable_key: https://download.ceph.com/keys/release.asc
-ceph_stable_release: luminous
+#ceph_stable_release: dummy
 #ceph_stable_repo: "{{ ceph_mirror }}/debian-{{ ceph_stable_release }}"
+ceph_stable_release: luminous
 
 #nfs_ganesha_stable: true # use stable repos for nfs-ganesha
 #nfs_ganesha_stable_branch: V2.5-stable
@@ -313,23 +313,24 @@ ceph_stable_release: luminous
 # These variables must be defined at least in all.yml and overrided if needed (inventory host file or group_vars/*.yml).
 # Eg. If you want to specify for each monitor which address the monitor will bind to you can set it in your **inventory host file** by using 'monitor_address' variable.
 # Preference will go to monitor_address if both monitor_address and monitor_interface are defined.
-# To use an IPv6 address, use the monitor_address setting instead (and set ip_version to ipv6)
-monitor_interface: eth0
+#monitor_interface: interface
 #monitor_address: 0.0.0.0
 #monitor_address_block: subnet
 # set to either ipv4 or ipv6, whichever your network is using
 #ip_version: ipv4
 #mon_use_fqdn: false # if set to true, the MON name used will be the fqdn in the ceph.conf
+monitor_interface: ens192
 
 ## OSD options
 #
 #journal_size: 5120 # OSD journal size in MB
-public_network: 192.168.52.0/24
-#cluster_network: "{{ public_network }}"
+#public_network: 0.0.0.0/0
+#cluster_network: "{{ public_network | regex_replace(' ', '') }}"
 #osd_mkfs_type: xfs
 #osd_mkfs_options_xfs: -f -i size=2048
 #osd_mount_options_xfs: noatime,largeio,inode64,swalloc
 osd_objectstore: bluestore
+public_network: 10.203.4.0/24
 
 # xattrs. by default, 'filestore xattr use omap' is set to 'true' if
 # 'osd_mkfs_type' is set to 'ext4'; otherwise it isn't set. This can
@@ -358,13 +359,17 @@ osd_objectstore: bluestore
 # These variables must be defined at least in all.yml and overrided if needed (inventory host file or group_vars/*.yml).
 # Eg. If you want to specify for each radosgw node which address the radosgw will bind to you can set it in your **inventory host file** by using 'radosgw_address' variable.
 # Preference will go to radosgw_address if both radosgw_address and radosgw_interface are defined.
-# To use an IPv6 address, use the radosgw_address setting instead (and set ip_version to ipv6)
-radosgw_interface: eth0
+#radosgw_interface: interface
 #radosgw_address: "{{ '0.0.0.0' if rgw_containerized_deployment else 'address' }}" # backward compatibility with stable-2.2, will disappear in stable 3.1
 #radosgw_address_block: subnet
 #radosgw_keystone: false # activate OpenStack Keystone options full detail here: http://ceph.com/docs/master/radosgw/keystone/
+#radosgw_keystone_ssl: false # activate this when using keystone PKI keys
 # Rados Gateway options
-#email_address: foo@bar.com
+email_address: segsa@cnj.jus.br
+
+radosgw_dns_name: ceph.cnj.jus.br
+radosgw_resolve_cname: true
+radosgw_interface: ens192
 
 ## REST API options
 #
@@ -445,6 +450,15 @@ radosgw_interface: eth0
 #     bar: 5678
 #
 #ceph_conf_overrides: {}
+ceph_conf_overrides:
+  global:
+    osd_pool_default_size: 3
+    osd_pool_default_min_size: 2
+    osd_pool_default_pg_num: 4
+    osd_pool_default_pgp_num: 4
+  osd:
+    bluestore_compression_algorithm: zlib
+    bluestore_compression_mode: aggressive
 
 
 #############
@@ -499,3 +513,8 @@ radosgw_interface: eth0
 #rolling_update: false
 
 
+#####################
+# Docker pull retry #
+#####################
+#docker_pull_retry: 3
+#docker_pull_timeout: "300s"
